@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div {
+            width: 100px;
+            padding: 10px;
+            /* padding-left: 20px */
+        }
+    </style>
+</head>
+
+<body>
+    <div></div>
+
+    <script src="../../jquery-3.4.1.js"></script>
+    <script>
+        //
+        var w = document.querySelector('div');
+
+        //如何将cookie转换为普通对象，以及如何删除cookie，请编写两个通用函数实现
+        function cookie(o) {
+            var times = new Date(o.time).toUTCString();
+            document.cookie = o.name + '=' + o.value + ';expires=' + times + ';';
+            // document.cookie = 'name=华为;expires=' + time + ';';
+            var cookie = document.cookie;
+            console.log('cookie ==> ', cookie);
+            var cookieData = cookie.split(/;\s*/);
+            console.log('cookieData ==> ', cookieData);
+            var cookies = {};
+            for (var i = 0; i < cookieData.length; i++) {
+                var c = cookieData[i].split('=');
+                cookies[c[0]] = c[1];
+            }
+
+            console.log('cookies ==> ', cookies);
+
+            if (o.old) {
+                var t = new Date(o.old).toUTCString();
+                document.cookie = o.name + '=;expires=' + t + ';';
+            }
+        }
+        cookie({
+            time: '2019-09-29 11:10:30',
+            name: 'searchHistory',
+            value: '路由器',
+            old: '2011-09-29 11:10:30'
+        });
+        // 使用原生js实现jQuery的outerWidth方法
+        var w = document.querySelector('div');
+        console.log(parseInt(getComputedStyle(w).width) + parseInt(getComputedStyle(w).paddingLeft) + parseInt(
+            getComputedStyle(w).paddingRight) + parseInt(getComputedStyle(w).border) * 2);
+
+
+        // console.log($(w).outerWidth());
+
+
+        // 编写一个自定义事件，(自定义事件名称是原生js不存在的, 比如自定义事件名称为：guoguo)
+        var myEvent = new CustomEvent('event_name', {
+            detail: {
+                title: 'This is title!'
+            },
+        });
+        //addEventListener() 方法用于向指定元素添加事件句柄。
+        window.addEventListener('event_name', function (event) {
+            console.log('得到标题为：', event.detail);
+            console.log(event);
+            
+        });
+        // 随后在对应的元素上触发该事件
+        // console.log(window.dispatchEvent);
+        // if (window.dispatchEvent) {
+        //dispatchEvent()就是触发执行了，dom.dispatchEvent(eventObject)
+        // 参数eventObject表示事件对象，是createEvent()方法返回的创建的Event对象。
+        window.dispatchEvent(myEvent);
+    </script>
+</body>
+
+</html>
